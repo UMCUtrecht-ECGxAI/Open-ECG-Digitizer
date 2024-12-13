@@ -11,6 +11,12 @@ class ECGScanDataset(torch.utils.data.Dataset[Any]):
         self.ecg_scan_path = ecg_scan_path
         self.ecg_mask_path = ecg_mask_path
 
+        # Prepend current software directory if path is not absolute.
+        if not os.path.isabs(self.ecg_scan_path):
+            self.ecg_scan_path = os.path.join(os.path.dirname(__file__), self.ecg_scan_path)
+        if not os.path.isabs(self.ecg_mask_path):
+            self.ecg_mask_path = os.path.join(os.path.dirname(__file__), self.ecg_mask_path)
+
         self.ecg_scan_files, self.ecg_mask_files = self._find_ecg_files()
 
         self.ecg_scans = self._load_scans(self.ecg_scan_files)
