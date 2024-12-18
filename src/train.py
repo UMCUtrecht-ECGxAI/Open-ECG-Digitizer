@@ -125,8 +125,8 @@ def train(
 
         for metric in metrics_instances:
             name = metric.__name__
-            train_metric = metric(train_targets, train_predictions)
-            val_metric = metric(val_targets, val_predictions)
+            train_metric = metric(train_predictions, train_targets)
+            val_metric = metric(val_predictions, val_targets)
             calculated_metrics[f"train_{name}"] = train_metric
             calculated_metrics[f"val_{name}"] = val_metric
             if val_metric > best_metrics[name]:
