@@ -50,7 +50,10 @@ class WeightedCrossEntropyLoss(nn.Module):
         log_prob: torch.Tensor = F.log_softmax(pred, dim=1)
 
         loss: torch.Tensor = -torch.sum(log_prob * target_one_hot, dim=1)
-        loss = loss * (1 + (target_one_hot[:, self.signal_class] + prob[:, self.signal_class]) * self.alpha)
+        with torch.no_grad():
+            w = 1 + (target_one_hot[:, self.signal_class] + prob[:, self.signal_class]) * (self.alpha - 1)
+            w = w / w.mean()
+        loss = w * loss
 
         return loss.mean()
 
