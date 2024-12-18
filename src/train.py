@@ -127,8 +127,8 @@ def train(
             name = metric.__name__
             train_metric = metric(train_predictions, train_targets)
             val_metric = metric(val_predictions, val_targets)
-            calculated_metrics[f"train_{name}"] = train_metric
-            calculated_metrics[f"val_{name}"] = val_metric
+            calculated_metrics[f"train_{name}"] = train_metric.numpy()
+            calculated_metrics[f"val_{name}"] = val_metric.numpy()
             if val_metric > best_metrics[name]:
                 best_metrics[name] = val_metric
                 is_new_best_metric = True
