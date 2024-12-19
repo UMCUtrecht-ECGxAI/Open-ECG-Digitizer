@@ -1,6 +1,66 @@
 # CHANGELOG
 
 
+## v0.4.0 (2024-12-19)
+
+### Bug Fixes
+
+* fix: patch off by one epoch offset ([`a8e9713`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/a8e971320c909de327ad2b9ef7b128b042563b77))
+
+* fix: cast metrics output to numpy as tune does not support tensors ([`15c9819`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/15c98198ab12039c745e003858f1620c793b9a87))
+
+* fix: correct input order of predictions and targets to metrics ([`bf62166`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/bf6216620612e5e9101660e5d81e1c01e8a934a7))
+
+* fix: initialize metric classes ([`da3dc7e`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/da3dc7e69f0a1b5f24764e8631f73c4b6f814566))
+
+* fix: store raw torch tensors to from predictions and targets ([`a44930e`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/a44930e933ee0493b7d5d8f0869c4a28fa969b4f))
+
+* fix: correct scaling of WeightedCrossEntropyLoss
+
+There are two fixes, 1 is subtracted from alpha st. to match the
+docstring description. Additionally, the loss is scaled st. the choice
+of alpha does not significantly increase/decrease the total loss. ([`2b97ab1`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/2b97ab172b2b7b9fec410d53898511a67ce45c85))
+
+### Continuous Integration
+
+* ci: increase max test time to 5 minutes ([`1611a5b`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/1611a5be6f7e73fa6c2b75fda6934f85971727f7))
+
+### Documentation
+
+* docs: add marker for google docstring convention ([`f258d28`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/f258d28d0a7577268122d3f5a264b571f3e002f6))
+
+### Features
+
+* feat: train dummy segmentation network ([`5cb3264`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/5cb32645990dc9b4cf0a367c3a7f64211b2847d6))
+
+* feat: implement MulticlassBinaryCrossEntropyLoss ([`30b7aea`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/30b7aea13105685609822af41a5448b5cfc8a5d6))
+
+* feat: set up tensorboard ([`ecea315`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/ecea3158821dc1cb45118a94017a7b1ac1fcf4bf))
+
+* feat: split ecg dataset into train, val and test ([`6715f97`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/6715f977a16fe15afbd01df984eaf9973bfe6ed2))
+
+### Performance Improvements
+
+* perf: add flag for cudnn_benchmark ([`dc50b21`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/dc50b21734a3c0e697bcb086281ba11931d7ba8f))
+
+* perf: compile train function if not using ray and mixed precision
+
+Ray (and the tests) needs the functions to be picklable. Compilation
+with mixed precision is not picklable. Training compilation and mixed
+precision works fine without tests and ray. ([`0d7eb8d`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/0d7eb8dac14c95c03764011de9f8e8cde0bb3cf3))
+
+* perf: support mixed precision
+
+Some type changes were also needed in order to fully support this
+functionality. ([`7f10101`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/7f10101a3239a5d7237ca92afd4754bca74da6dd))
+
+### Unknown
+
+* Merge pull request #6 from Ahus-AIM/train_unet_segmentation
+
+Train unet segmentation ([`5316262`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/531626248d4a85e5685a244744505a8faae64430))
+
+
 ## v0.3.0 (2024-12-18)
 
 ### Bug Fixes
