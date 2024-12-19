@@ -160,7 +160,7 @@ def train(
 
         results = {"train_loss": train_loss / train_cases, "val_loss": curr_val_loss} | calculated_metrics
         if not use_ray:
-            print(f"Epoch {epoch}/{num_epochs}: {results}")
+            print(f"Epoch {epoch + 1}/{num_epochs}: {results}")
         elif is_new_best_metric:
             with tempfile.TemporaryDirectory() as temp_checkpoint_dir:
                 path = os.path.join(temp_checkpoint_dir, "checkpoint.pt")
