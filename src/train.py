@@ -199,7 +199,18 @@ def load_and_train(ray_config: CN, config: CN) -> None:
     )
     criterion = import_class_from_path(config.TRAIN.CRITERION.class_path)()
     train_dataloader, val_dataloader, test_dataloder = get_data_loaders(config.DATASET, config.DATALOADER.KWARGS)
-    train(
+
+    train_fn = train
+
+    if config.TRAIN.COMPILE:
+        if ray_config and mixed_precision_scaler:
+            print(
+                "Compilation with torch is disabled when using ray and mixed precision scaler as the compiled "
+                "function is not picklable."
+            )
+        else:
+            train_fn = torch.compile(train_fn)
+    train_fn(
         model,
         criterion,
         train_dataloader,
