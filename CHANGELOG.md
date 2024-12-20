@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.5.0 (2024-12-20)
+
+### Features
+
+* feat: ecg scan transforms and corresponding visualization ([`94192fd`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/94192fd83795aba32895472249c2634bb1d5ee28))
+
+### Unknown
+
+* Merge pull request #5 from Ahus-AIM/transforms
+
+Transformations and visualization ([`2024545`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/2024545e9cc7e012cd68465b0cba807519d66ea0))
+
+
 ## v0.4.0 (2024-12-19)
 
 ### Bug Fixes
