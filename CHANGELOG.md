@@ -1,6 +1,25 @@
 # CHANGELOG
 
 
+## v0.7.0 (2024-12-27)
+
+### Bug Fixes
+
+* fix: probabilities sum to 1 ([`8b477fe`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/8b477fe86cf9bf6fd9a73fead9377d566d645997))
+
+### Features
+
+* feat: add support for composed transforms ([`5b931bb`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/5b931bbacbbb52a1f649eafa44e1edd9bed48f22))
+
+* feat: add transforms and optional reduced load size ([`01d2a59`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/01d2a59b2c777297e13e52b8cff377c222305765))
+
+### Unknown
+
+* Merge pull request #8 from Ahus-AIM/improved_training_loop
+
+Improved training loop ([`00a85ad`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/00a85ad3bb973aee90b4d73d7114209dd15f1b07))
+
+
 ## v0.6.0 (2024-12-23)
 
 ### Features
