@@ -17,7 +17,7 @@ TRAIN:
     class_path: 'torch.amp.GradScaler'
     KWARGS: {}
   CRITERION:
-    class_path: 'src.loss.loss.WeightedDiceLoss'
+    class_path: 'src.loss.loss.WeightedCrossEntropyLoss'
     KWARGS:
       alpha: 2.0
   KWARGS:
@@ -43,10 +43,10 @@ HYPERPARAMETER_SEARCH:
       KWARGS:
         dims:
           SAMPLE_TYPE: 'ray.tune.grid_search'
-          VALUES: [[4, 8, 16]]
+          VALUES: [[16, 32, 64, 64, 64]]
         depths:
           SAMPLE_TYPE: 'ray.tune.grid_search'
-          VALUES: [[2, 2, 2]]
+          VALUES: [[2, 2, 2, 2, 2]]
 
 DATALOADER:
   class_path: 'torch.utils.data.DataLoader'
@@ -58,15 +58,46 @@ DATALOADER:
 DATASET:
   class_path: 'src.dataset.ecg_scan.ECGScanDataset'
   KWARGS: {}
+
+  TRANSFORM_COMMON: &TRANSFORM_COMMON
+    class_path: 'src.transform.vision.ComposedTransform'
+    KWARGS:
+      transform_config:
+        - class_path: 'src.transform.vision.GreyscaleTransform'
+          KWARGS: {}
+        - class_path: 'src.transform.vision.RandomShiftTextTransform'
+          KWARGS: {}
+        - class_path: 'src.transform.vision.RandomTextOverlayTransform'
+          KWARGS: {}
+        - class_path: 'src.transform.vision.RandomFlipTransform'
+          KWARGS: {}
+        - class_path: 'src.transform.vision.RandomBlurOrSharpnessTransform'
+          KWARGS: {}
+        - class_path: 'src.transform.vision.RandomGammaTransform'
+          KWARGS: {}
+        - class_path: 'src.transform.vision.RandomResizedCropTransform'
+          KWARGS: {}
+        - class_path: 'src.transform.vision.RandomRotation'
+          KWARGS: {}
+        - class_path: 'src.transform.vision.RandomJPEGCompression'
+          KWARGS: {}
+        - class_path: 'src.transform.vision.RandomGradientOverlay'
+          KWARGS: {}
+        - class_path: 'src.transform.vision.RefineMask'
+          KWARGS: {}
   TRAIN:
     KWARGS:
       ecg_scan_path: '../../data/ecg/ecg_scans/train'
       ecg_mask_path: '../../data/ecg/ecg_masks/train'
+    TRANSFORM: *TRANSFORM_COMMON
   VAL:
     KWARGS:
       ecg_scan_path: '../../data/ecg/ecg_scans/val'
       ecg_mask_path: '../../data/ecg/ecg_masks/val'
+      load_n: 1
+    TRANSFORM: *TRANSFORM_COMMON
   TEST:
     KWARGS:
       ecg_scan_path: '../../data/ecg/ecg_scans/test'
       ecg_mask_path: '../../data/ecg/ecg_masks/test'
+      load_n: 1
