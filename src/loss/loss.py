@@ -8,7 +8,7 @@ SIGNAL_CLASS: int = 2
 
 
 class WeightedDiceLoss(nn.Module):
-    def __init__(self, alpha: float = 1.0, signal_class: int = SIGNAL_CLASS) -> None:
+    def __init__(self, alpha: float = 1.0, signal_class: int = SIGNAL_CLASS, union_exponent: int = 1) -> None:
         """
         Args:
             alpha (float): Extra weight assigned to the signal class.
@@ -17,12 +17,15 @@ class WeightedDiceLoss(nn.Module):
         super(WeightedDiceLoss, self).__init__()
         self.alpha: float = alpha
         self.signal_class: int = signal_class
+        self.union_exponent: int = union_exponent
 
     def forward(self, pred: torch.Tensor, target_one_hot: torch.Tensor, eps: float = 1e-6) -> torch.Tensor:
         pred_probs: torch.Tensor = F.softmax(pred, dim=1)
 
         intersection: torch.Tensor = torch.sum(pred_probs * target_one_hot, dim=(2, 3))
-        union: torch.Tensor = torch.sum(pred_probs, dim=(2, 3)) + torch.sum(target_one_hot, dim=(2, 3))
+        union: torch.Tensor = torch.sum(pred_probs.pow(self.union_exponent), dim=(2, 3)) + torch.sum(
+            target_one_hot.pow(self.union_exponent), dim=(2, 3)
+        )
         dice: torch.Tensor = 1 - (2 * intersection) / (union + eps)
 
         multiplier: torch.Tensor = torch.ones_like(dice).to(target_one_hot.device)
