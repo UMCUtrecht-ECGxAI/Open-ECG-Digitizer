@@ -242,8 +242,12 @@ def main(config: CN) -> Optional[ExperimentAnalysis]:
         return load_and_train(None, config)  # type: ignore
 
     ray_config = load_hyperparameter_search(config.HYPERPARAMETER_SEARCH.SEARCH_SPACE)
-    scheduler = import_class_from_path(config.HYPERPARAMETER_SEARCH.SCHEDULER.class_path)(
-        **config.HYPERPARAMETER_SEARCH.SCHEDULER.KWARGS
+    scheduler = (
+        import_class_from_path(config.HYPERPARAMETER_SEARCH.SCHEDULER.class_path)(
+            **config.HYPERPARAMETER_SEARCH.SCHEDULER.KWARGS
+        )
+        if "SCHEDULER" in config.HYPERPARAMETER_SEARCH
+        else None
     )
 
     # Set seed for Ray Tune's random search. If you remove this line, you will

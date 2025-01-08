@@ -30,14 +30,6 @@ TRAIN:
         fit: false
 
 HYPERPARAMETER_SEARCH:
-  SCHEDULER:
-    class_path: 'ray.tune.schedulers.ASHAScheduler'
-    KWARGS:
-      metric: 'val_loss'
-      mode: 'min'
-      max_t: 3000
-      grace_period: 20
-      reduction_factor: 4
   SEARCH_SPACE:
     MODEL:
       KWARGS:
