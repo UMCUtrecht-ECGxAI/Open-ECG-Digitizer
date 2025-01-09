@@ -9,6 +9,12 @@ MODEL:
 TRAIN:
   COMPILE: True
   CUDNN_BENCHMARK: False
+  STOPPER:
+    class_path: 'src.utils.EarlyStopper'
+    KWARGS:
+      metric: 'val_loss'
+      patience: 5
+      delta: 0
   OPTIMIZER:
     class_path: 'torch.optim.AdamW'
     KWARGS:
@@ -21,13 +27,23 @@ TRAIN:
     KWARGS:
       alpha: 1.0
   KWARGS:
-    epochs: 10
+    epochs: 1000
     metrics: []
     device: 'cuda:0'
     metrics:
       -
         class_path: 'src.loss.loss.MulticlassBinaryCrossEntropyLoss'
         fit: false
+        KWARGS: {}
+      -
+        class_path: 'src.loss.loss.MulticlassBinaryDiceLoss'
+        fit: false
+        KWARGS: {}
+      -
+        class_path: 'src.loss.loss.MulticlassBinaryDiceLoss'
+        fit: false
+        KWARGS:
+          union_exponent: 2.0
 
 HYPERPARAMETER_SEARCH:
   SEARCH_SPACE:
@@ -40,7 +56,24 @@ HYPERPARAMETER_SEARCH:
         depth:
           SAMPLE_TYPE: 'ray.tune.grid_search'
           KWARGS:
-            values: [2, 4, 8]
+            values: [2, 4]
+    TRAIN:
+      OPTIMIZER:
+        KWARGS:
+          lr:
+            SAMPLE_TYPE: 'ray.tune.grid_search'
+            KWARGS:
+              values: [1e-3, 1e-4, 1e-5]
+      CRITERION:
+        class_path:
+          SAMPLE_TYPE: 'ray.tune.grid_search'
+          KWARGS:
+            values: ['src.loss.loss.WeightedDiceLoss', 'src.loss.loss.WeightedCrossEntropyLoss']
+        KWARGS:
+          alpha:
+            SAMPLE_TYPE: 'ray.tune.grid_search'
+            KWARGS:
+              values: [1.0, 2.0, 10.0]
 
 DATALOADER:
   class_path: 'torch.utils.data.DataLoader'
@@ -56,14 +89,11 @@ DATASET:
     KWARGS:
       ecg_scan_path: '/data/ecg_dataset/ecg_scans/train_transformed'
       ecg_mask_path: '/data/ecg_dataset/ecg_masks/train_transformed'
-      load_n: 50
   VAL:
     KWARGS:
       ecg_scan_path: '/data/ecg_dataset/ecg_scans/val_transformed'
       ecg_mask_path: '/data/ecg_dataset/ecg_masks/val_transformed'
-      load_n: 3
   TEST:
     KWARGS:
       ecg_scan_path: '/data/ecg_dataset/ecg_scans/test'
       ecg_mask_path: '/data/ecg_dataset/ecg_masks/test'
-      load_n: 1
