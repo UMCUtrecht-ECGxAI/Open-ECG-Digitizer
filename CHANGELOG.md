@@ -1,6 +1,69 @@
 # CHANGELOG
 
 
+## v0.13.0 (2025-01-13)
+
+### Bug Fixes
+
+* fix: improve naming of in- & out channels for unet ([`44c3588`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/44c358854fe648a8933bd9d662e7ba611964f908))
+
+* fix: improve control flow ([`1591018`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/15910184133ced1634d1844300a1dbc9dd2ea8d9))
+
+* fix: flip metric comparison sign as we only use loss ([`09b563d`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/09b563db57b24d9b7acc7c4b16cf5027ccf33c4d))
+
+* fix: enforce uniform depth for all unet en-/decoder blocks ([`d2ab89e`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/d2ab89ea0edcba5eb6255f957852d447640aec65))
+
+* fix: correct WeightedDiceLoss for batch size > 1 ([`2f94966`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/2f94966935ac1b113e0fe21e9b3f3c173a70b517))
+
+* fix: make hyperparameter search scheduler optional ([`10711a1`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/10711a1386b592b9acd18355993981c10ee856b6))
+
+* fix: seed hyperparameter search for uniform configuration each run ([`14b0a46`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/14b0a462710b280ad10a8119371f8f29e99debaa))
+
+* fix: configure hyperparameter search with searchspace kwargs ([`8c27bd1`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/8c27bd15285b09a06d4af82c51482fffa4bb1b33))
+
+### Features
+
+* feat: implement cosine to constant lr scheduler ([`12c950d`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/12c950db16c83dc4ce6bab12a4d4f8d6f0c5875b))
+
+* feat: config file for unet hyperparameter search ([`c2236a6`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/c2236a682ea01ac6713919666b0c74471d05f10a))
+
+* feat: support kwargs for metrics ([`5b1a4fe`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/5b1a4fe039d09c44ba10a8f960151d0cc9960b4e))
+
+* feat: enable early stopping of training ([`2eea233`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/2eea23322d442a20854e8493c4a6deab3d1b9868))
+
+* feat: add learning rate scheduler ([`e3bf78b`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/e3bf78bfe8484b5fba1605568824cd6f91fb645c))
+
+* feat: implement MulticlassBinaryDiceLoss ([`d25e3d5`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/d25e3d589655c3c72a665fdc38b9a38df346f48e))
+
+* feat: enable custom union exponent
+
+This is suggested in https://arxiv.org/abs/1606.04797. ([`b1742e3`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/b1742e37abe36935331e4fe2149af2918a2c5da7))
+
+### Performance Improvements
+
+* perf: configure unet hyperparameter search ([`845ece9`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/845ece93ccdb404d8232d286a2b5d2fbac482aa2))
+
+* perf: increase performance by pinning dataloader memory ([`6da1eca`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/6da1eca25222a68f011897d5d7b8e9060680ab2b))
+
+* perf: calculate running metrics due to memory limitations ([`75609c7`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/75609c7c44b75cf765f7d2e0eeefd6049f396447))
+
+* perf: load data samples lazily due to memory constraints ([`7bd647a`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/7bd647a8b8706b53913e2b5433ccc7a0ac8092c8))
+
+### Refactoring
+
+* refactor: create class for binarization of multiclass loss ([`e1e1625`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/e1e162553478ac56a19d2d35894777b4edc76d6b))
+
+### Testing
+
+* test: remove compilation as it fails and is currently not necessary ([`f7fb902`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/f7fb9027973329eb02b702af37dad40c841c433a))
+
+### Unknown
+
+* Merge pull request #15 from Ahus-AIM/train_segmentation
+
+Train segmentation ([`b7b2b54`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/b7b2b547abbe8a5055dd00af2204a5609a7d97a5))
+
+
 ## v0.12.0 (2025-01-10)
 
 ### Bug Fixes
