@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.14.2 (2025-01-15)
+
+### Bug Fixes
+
+* fix: resize if background image is lower resolution than ecg ([`eb5967b`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/eb5967bc017540c85478abd7c34c82835b68664a))
+
+### Unknown
+
+* Merge pull request #19 from Ahus-AIM/vision_fix
+
+fix: resize if background image is lower resolution than ecg ([`6f57a62`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/6f57a6259e7430a7d607cf04fb376f420099b3aa))
+
+
 ## v0.14.1 (2025-01-14)
 
 ### Bug Fixes
