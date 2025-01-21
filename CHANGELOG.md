@@ -1,6 +1,25 @@
 # CHANGELOG
 
 
+## v1.1.0 (2025-01-21)
+
+### Features
+
+* feat: separate cropping module ([`83edca6`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/83edca601ec0c749fd4da30d001127b7d4dec517))
+
+### Refactoring
+
+* refactor: remove cropping logic from snake ([`bcdcfe6`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/bcdcfe61df68ad7c65e2ad6e9937d31a51c92f99))
+
+* refactor: remove grid detector class ([`2667d2d`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/2667d2d01cdaa3630c706072f2edd5f46fdec684))
+
+### Unknown
+
+* Merge pull request #23 from Ahus-AIM/cropper
+
+Cropper ([`b1c1b01`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/b1c1b016887035e6248a7bffaaec82c5ace182ed))
+
+
 ## v1.0.0 (2025-01-17)
 
 ### Breaking
