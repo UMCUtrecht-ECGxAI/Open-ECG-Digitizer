@@ -1,6 +1,37 @@
 # CHANGELOG
 
 
+## v1.2.0 (2025-01-21)
+
+### Bug Fixes
+
+* fix: fill average rgb image color for perspective ([`bb536be`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/bb536befc643f72f9754e1f594da436e86709e07))
+
+### Continuous Integration
+
+* ci: use python3.10 ([`1c7e999`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/1c7e999b3d8651402147102dad7eb7b7ce09d104))
+
+* ci: add ~/.local/bin to path ([`4805eb1`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/4805eb155bfc7e45310059383ec308ae8dc4b752))
+
+* ci: use self-hosted runners as github has limit ([`7097921`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/70979216ee6b1687f652b4fa3638d21bb4c75f97))
+
+### Features
+
+* feat: add pixel_size_finder to InferenceWrapper ([`ec07675`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/ec07675f54c206a91b217e78e7ea01f30fe6cad7))
+
+* feat: create a class to find mm/pixel in x and y direction ([`741bd5f`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/741bd5fe06ceec0e92532218209abec7be40aafa))
+
+### Unknown
+
+* Merge pull request #24 from Ahus-AIM/pixel_size_finder
+
+Pixel size finder ([`23d9c8e`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/23d9c8e8848ff807fae7716979f422810a4bc454))
+
+* Merge pull request #25 from Ahus-AIM/self_hosted_runner
+
+Self hosted runner ([`c3bc783`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/c3bc783395d025732afa797043689afb3d2318fa))
+
+
 ## v1.1.0 (2025-01-21)
 
 ### Features
