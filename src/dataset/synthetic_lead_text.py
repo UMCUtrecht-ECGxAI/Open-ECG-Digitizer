@@ -16,6 +16,10 @@ from torchvision.transforms import ToTensor
 
 
 def pink_noise(shape: tuple[int, int]) -> NDArray[np.float32]:
+    """
+    Generates pink noise using the 1/f noise method.
+    Pink noise has spatial correlation, which is useful for simulating natural textures.
+    """
     rows, cols = shape
     x = np.linspace(-0.5, 0.5, cols)
     y = np.linspace(-0.5, 0.5, rows)
@@ -80,15 +84,13 @@ class SyntheticLeadTextDataset(Dataset[tuple[Tensor, Tensor]]):
         return font_files
 
     def _smudge_text(self, img: NDArray[np.float32]) -> NDArray[np.float32]:
-        # with 50% probability, apply gaussian blur to smudge the text
         if random.random() < 0.7:
             sigma = random.uniform(0.0, 1.0)
             img = gaussian_filter(img, sigma=sigma)
         if random.random() < 0.5:
-            # dropout between 0.1 and 0.8
             dropout = random.uniform(0.1, 0.8)
             mask = np.random.rand(*img.shape) < dropout
-            img[mask] = 0.0  # Set the pixels to zero where the mask is True
+            img[mask] = 0.0
         return img
 
     def _generate_image_with_text(

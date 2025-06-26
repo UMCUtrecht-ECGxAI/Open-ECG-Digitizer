@@ -3,40 +3,32 @@ from typing import Any, Optional, Union
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
-import yaml
 from numpy.typing import NDArray
 from scipy.optimize import linear_sum_assignment
-
-from src.utils import import_class_from_path
 
 
 class LeadIdentifier:
     LEAD_CHANNEL_ORDER: list[str] = ["I", "II", "III", "aVR", "aVL", "aVF", "V1", "V2", "V3", "V4", "V5", "V6"]
 
     def __init__(
-        self, config_path: str, unet_config_path: str, unet_weight_path: str, device: torch.device, debug: bool = False
+        self,
+        *,
+        layouts: dict[str, Any],
+        unet: torch.nn.Module,
+        device: torch.device,
+        debug: bool = False,
     ) -> None:
-        """Initializes LeadIdentifier with configuration and model weights.
-
-        Args:
-            config_path: Path to the layout config YAML.
-            unet_config_path: Path to the UNet config YAML.
-            unet_weight_path: Path to the UNet weights.
-            device: Device to use for the model.
-            debug: If True, enables debug plotting.
         """
-        with open(config_path, "r") as f:
-            self.layouts: dict[str, Any] = yaml.safe_load(f)
-        with open(unet_config_path, "r") as f:
-            unet_config: dict[str, Any] = yaml.safe_load(f)
-        unet_class_path: str = unet_config["MODEL"]["class_path"]
-        unet_kwargs: dict[str, Any] = unet_config["MODEL"]["KWARGS"]
-        self.unet = import_class_from_path(unet_class_path)(**unet_kwargs).to(device)
-        checkpoint: dict[str, torch.Tensor] = torch.load(unet_weight_path, map_location=device)
-        checkpoint = {k.replace("_orig_mod.", ""): v for k, v in checkpoint.items()}
-        self.unet.load_state_dict(checkpoint)
-        self.device: torch.device = device
-        self.debug: bool = debug
+        Args:
+            layouts: dict mapping layout names → layout definitions.
+            unet: a loaded and weight-initialized UNet model (in eval mode).
+            device: device where inference will run.
+            debug: whether to draw scatter/plots.
+        """
+        self.layouts = layouts
+        self.unet = unet.to(device).eval()
+        self.device = device
+        self.debug = debug
 
     def _merge_nonoverlapping_lines(self, lines: torch.Tensor) -> torch.Tensor:
         """Merges adjacent non-overlapping lines.
@@ -139,6 +131,7 @@ class LeadIdentifier:
 
         used_indices: set[tuple[int, int, int]] = set()
 
+        # Use the layout that we have matched, to fill a "canonical" tensor, in which the leads are always ordered as self.LEAD_CHANNEL_ORDER.
         chunk_width: int = width // cols
         for row_idx, layout_row in enumerate(leads_def):
             if not isinstance(layout_row, list):
@@ -159,6 +152,7 @@ class LeadIdentifier:
                     canonical[canon_idx, start:end] = sign * chunk
                     used_indices.add((canon_idx, start, end))
 
+        # If there are any rythm, leads, we try to match them with the canonical leads, through cosine similarity.
         num_rhythm_leads: int = len(rhythm_leads)
         if num_rhythm_leads > 0:
             rhythm_corrs: NDArray[np.float32] = np.full((num_rhythm_leads, num_leads), -1, dtype=np.float32)
@@ -168,6 +162,8 @@ class LeadIdentifier:
                     corr: float = self._nan_cossim(rhythm_vec, canonical[j, :])
                     rhythm_corrs[i, j] = corr
 
+            # Leads II, V1 and V5 are most commonly used for rhythm, so we inflate their cosine similarity.
+            # Other matches are still possible.
             if num_rhythm_leads == 1:
                 rhythm_corrs[:, 1] = self._inflate_cossim(rhythm_corrs[:, 1])
             elif num_rhythm_leads == 2:
@@ -283,6 +279,7 @@ class LeadIdentifier:
         n: int = pts.shape[0]
         best: dict[str, Any] = {"cost": np.inf}
 
+        # Loop through each predefined possible layout, and calculate how fitting each of them is.
         for layout_name, desc in self.layouts.items():
             total_rows: int = desc["total_rows"]
             rows_difference: int = abs(total_rows - rows_in_layout)
@@ -299,6 +296,8 @@ class LeadIdentifier:
                 if flip:
                     P = -P
 
+                # This first part aims at scaling the coordinates to find the best match, as
+                # we do not a priori know where the leads are in the image.
                 Pm: list[NDArray[np.float64]] = []
                 Gm: list[NDArray[np.float64]] = []
                 idxs: list[tuple[int, int]] = []
@@ -330,6 +329,8 @@ class LeadIdentifier:
                 s[s < 1e-4] = 1e-4
                 t: NDArray[np.float64] = mu_G - s * mu_P
                 P_scaled: NDArray[np.float64] = P * s + t
+
+                # After scaling the coordinates, we calculate the distances between the detected leads and the grid leads.
                 res: list[float] = []
                 for i, j in idxs:
                     res.append(float(np.linalg.norm(P_scaled[i] - grid_pts[j])))
@@ -393,9 +394,11 @@ class LeadIdentifier:
         rows_in_layout: int = lines.shape[0]
         self.unet.eval()
         with torch.no_grad():
-            logits: torch.Tensor = self.unet(feature_map.to(self.device))  # [1,12,H,W]
-            probs: torch.Tensor = torch.softmax(logits, dim=1)[:, :12]
-            probs[:, 0] = 0
+            logits: torch.Tensor = self.unet(feature_map.to(self.device))  # [1,13,H,W]
+            probs: torch.Tensor = torch.softmax(logits, dim=1)[:, :12]  # [1,12,H,W]
+            probs[:, 0] = (
+                0  # Ignore the position of the "I" lead as it is particularly prone to false positives ("I" looks like a vertical line).
+            )
         probs[probs < threshold] = 0
         detected: list[tuple[str, float, float]] = self._extract_lead_points(probs, self.LEAD_CHANNEL_ORDER)
         if len(detected) <= 2:

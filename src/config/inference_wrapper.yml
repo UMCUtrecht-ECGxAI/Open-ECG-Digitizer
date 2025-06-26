@@ -40,6 +40,18 @@ MODEL:
         class_path: 'src.model.pixel_size_finder.PixelSizeFinder'
         KWARGS: {}
 
+<<<<<<< HEAD
+=======
+      LAYOUT_IDENTIFIER:
+        class_path: 'src.model.lead_identifier.LeadIdentifier'
+        config_path: 'src/config/lead_layouts_reduced.yml'
+        unet_config_path: 'src/config/lead_name_unet.yml'
+        unet_weight_path: '/weights/Electrocardiogram-Digitization/lead_name_unet_weights_26062025.pt'
+        KWARGS:
+          device: 'cuda'
+          debug: false
+
+>>>>>>> f3e6f32 (fixup config inference warpper)
     device: 'cuda:0'
     resample_size: 2500
     rotate_on_resample: true
@@ -47,5 +59,9 @@ MODEL:
 
 DATA:
   images_path: '/dataset/pmcardio_ecg_image_dataset/visual_data/'
+<<<<<<< HEAD
   image_extensions: ['.png', '.jpg', 'jpeg']
+=======
+  image_extensions: ['.png', '.jpg', '.jpeg', '.JPG']
+>>>>>>> f3e6f32 (fixup config inference warpper)
   output_path: 'sandbox/inference_output'
