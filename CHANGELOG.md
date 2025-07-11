@@ -2,6 +2,46 @@
 
 <!-- version list -->
 
+## v1.6.0 (2025-07-11)
+
+### Bug Fixes
+
+- Apply windowing to reduce effects from edges
+  ([`7d57657`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/7d57657712e1c6d6037b99b58fc154b0f0358909))
+
+- Debug false as default, and fix edge case errors
+  ([`265bc39`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/265bc39109a0e1a0a7c83ed3ddeddb09a1b1be16))
+
+- Do not step lr scheduler in eval mode
+  ([`d5f3632`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/d5f36321133524059259d703a68ff52ce19b383e))
+
+- Set alpha factor as argument
+  ([`daf451b`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/daf451b9c4b5b5906b4a61cb4a82fd3073e084c5))
+
+- Update config files
+  ([`28673c5`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/28673c50dc80419af57475bc24ddfde321bb7173))
+
+- Update weight path for inference
+  ([`42d94df`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/42d94dfef393bd5ca6db8691aa2cd1de2e2d0eca))
+
+### Features
+
+- Add code to calculate metrics
+  ([`5686d24`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/5686d24a0be0d40d9c10ffb4d2f3c9874c6c5a43))
+
+- Inference wrapper
+  ([`844667e`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/844667e84169d019e949f1e3e8d764084a541551))
+
+- Layout autodetection
+  ([`9daf923`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/9daf9233ff7e4634757603085edc3412141d138e))
+
+- Make dewarping optional and change return types
+  ([`cfc110d`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/cfc110d480254796df024c9d130400501f0e7c96))
+
+- Update digitizer to save csv files
+  ([`1bcb178`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/1bcb1786b7582188a6c7578b7088c0120aa99db1))
+
+
 ## v1.5.0 (2025-07-01)
 
 ### Bug Fixes
