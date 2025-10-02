@@ -2,6 +2,22 @@
 
 <!-- version list -->
 
+## v1.8.0 (2025-10-02)
+
+### Documentation
+
+- Improve README.md
+  ([`32972cf`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/32972cfe3558c6b6c81bcae386e7e8402b19c239))
+
+### Features
+
+- Save metadata along digitized timeseries
+  ([`33d349f`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/33d349f3fec80d40755cdf8fff70f8777ca80e40))
+
+- Support variable threshold for crop left/right
+  ([`ff49836`](https://github.com/Ahus-AIM/Electrocardiogram-Digitization/commit/ff49836d269fcaa2083f90344a8c442de2eac698))
+
+
 ## v1.7.0 (2025-09-17)
 
 ### Build System
