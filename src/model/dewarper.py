@@ -500,29 +500,3 @@ class Dewarper(torch.nn.Module):
         self._filter_and_graph_nodes()
         self._optimize_grid_layout()
         self._fit_warp()
-
-
-if __name__ == "__main__":
-    base_path = "/home/stenheli/projects/Electrocardiogram-Digitization/sandbox/inference_output/"
-    npy_files = []
-    for root, dirs, files in os.walk(base_path):
-        for file in files:
-            if file.endswith("grid_probabilities.npy"):
-                npy_files.append(os.path.join(root, file))
-
-    file_path = npy_files[13]
-    pixels_per_mm = float(file_path.split("XXX")[1])
-    grid_probabilities = torch.tensor(np.load(file_path))
-    device = "cuda"
-
-    processor = Dewarper()
-    processor.fit(grid_probabilities.to(device), pixels_per_mm)
-    warped_image = processor.transform(grid_probabilities.to(device))
-
-    plt.imshow(grid_probabilities.cpu().numpy(), cmap="gray")
-    plt.savefig(os.path.join(DEBUG_OUTPUT_DIR, "original_grid_probabilities.png"))
-    plt.show()
-
-    plt.imshow(warped_image.cpu().numpy(), cmap="gray")
-    plt.savefig(os.path.join(DEBUG_OUTPUT_DIR, "warped_image.png"))
-    plt.show()
