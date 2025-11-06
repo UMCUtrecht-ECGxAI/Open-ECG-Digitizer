@@ -83,6 +83,14 @@ def save_timeseries_csv(canonical: torch.Tensor | None, output_basepath: str) ->
     header = ",".join(col_names)
     np.savetxt(output_basepath + "_timeseries_canonical.csv", data, delimiter=",", header=header, comments="")
 
+def save_timeseries_npy(canonical: torch.Tensor | None, output_basepath: str) -> None:
+    if canonical is None:
+        return
+    data = canonical.squeeze().cpu().numpy()
+    if data.ndim == 1:
+        data = data[None, :]
+    np.save(output_basepath + ".npy", data)
+
 
 def save_png_plot(got_values: dict[str, Any], canonical: torch.Tensor | None, output_basepath: str) -> None:
     fig, axs = plt.subplots(2, 2, figsize=(20, 14))
@@ -132,11 +140,15 @@ def save_matching_cost(got_values: dict[str, Any], output_basepath: str) -> None
         f.write(f"{file_name},{matching_cost},{is_flipped},{lead_layout}\n")
 
 
-def save_outputs(got_values: dict[str, Any], output_basepath: str, save_mode: str = "all") -> None:
+def save_outputs(got_values: dict[str, Any], output_basepath: str, save_mode: str = "all", file_format: str = 'npy', save_png: bool = True) -> None:
     canonical = canonical_from_got_values(got_values)
     if save_mode in ["all", "timeseries_only"]:
-        save_timeseries_csv(canonical, output_basepath)
-    if save_mode in ["all", "png_only"]:
+        if file_format == "csv":
+            save_timeseries_csv(canonical, output_basepath)
+        else:
+            save_timeseries_npy(canonical, output_basepath)
+
+    if save_png and save_mode in ["all", "png_only"]:
         save_png_plot(got_values, canonical, output_basepath)
     save_matching_cost(got_values, output_basepath)
 
@@ -157,7 +169,9 @@ def process_one_file(file_path: str, config: CN, inference_wrapper: Any, save_mo
         output_file_path = os.path.join(config.DATA.output_path, rel_path)
         output_basepath = os.path.splitext(output_file_path)[0]
         os.makedirs(os.path.dirname(output_basepath), exist_ok=True)
-        save_outputs(got_values, output_basepath, save_mode)
+        file_format = getattr(config.DATA, "file_format", "npy")
+        save_png = getattr(config.DATA, "save_png", True)
+        save_outputs(got_values, output_basepath, save_mode, save_png, file_format)
 
 
 def main(config: CN) -> None:
