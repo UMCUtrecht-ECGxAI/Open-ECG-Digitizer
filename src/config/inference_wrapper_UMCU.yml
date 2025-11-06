@@ -55,8 +55,10 @@ MODEL:
     apply_dewarping: false
 
 DATA:
-  images_path: '/home/jovyan/work/training/ECGDigitization/raw_data/umcu_rhythm_PHOTO'
+  images_path: '/home/jovyan/work/training/ECGDigitization/raw_data/umcu_rhythm_PHOTO/00/00/667f79c3c99/3x4'
   image_extensions: ['.png', '.jpg', '.jpeg', '.JPG']
-  output_path: '/home/jovyan/work/training/ECGDigitization/raw_data/umcu_rhythm_PHOTO_Output'
-  save_mode: 'all'
+  output_path: '/home/jovyan/work/training/ECGDigitization/raw_data/finnish_fabry_ecg_output'
+  save_mode: 'timeseries_only' # Options: 'all', 'png_only'
+  file_format: 'npy' # Or csv
+  save_png: false
   layout_should_include_substring: True
